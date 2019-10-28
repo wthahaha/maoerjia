@@ -1,4 +1,4 @@
-Django==1.11.6
+Django==1.11.23
 django-simpleui==1.4.8
 jieba==0.39
 Pillow==5.4.1
