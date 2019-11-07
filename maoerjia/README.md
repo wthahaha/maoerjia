@@ -2,7 +2,20 @@
 
 ## 1. 开发环境
 
-### 1.1 启动本地数据库
+### 1.1 创建开发环境
+
+```shell
+git clone https://github.com/cncert/maoerjia.git
+# cd maoerjia
+# python37 -m venv venv
+# source venv/bin/activate
+(venv)# pip install -r requirements.txt
+(venv)# cd maoerjia/
+(venv)# python manage.py makemigrations
+(venv)# python manage.py migrate
+```
+
+### 1.2 启动本地数据库
 
 ```shell
 
@@ -15,19 +28,6 @@ CREATE DATABASE IF NOT EXISTS maoerjia DEFAULT CHARSET utf8 COLLATE utf8_general
 CREATE USER 'maoerjia'@'%' IDENTIFIED BY '12345678';
 GRANT All privileges ON maoerjia.* TO 'maoerjia'@'%';
 
-```
-
-### 1.2 创建开发环境
-
-```shell
-git clone https://github.com/cncert/maoerjia.git
-# cd maoerjia
-# python37 -m venv venv
-# source venv/bin/activate
-(venv)# pip install -r requirements.txt
-(venv)# cd maoerjia/
-(venv)# python manage.py makemigrations
-(venv)# python manage.py migrate
 ```
 
 ### 1.3 执行数据库迁移操作
