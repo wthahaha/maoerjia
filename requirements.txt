@@ -1,5 +1,5 @@
 Django==2.2.5
-django-simpleui==1.4.8
+django-simpleui==3.3
 djangorestframework==3.10.3
 itsdangerous==1.1.0
 jieba==0.39
