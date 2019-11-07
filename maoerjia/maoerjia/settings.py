@@ -82,6 +82,7 @@ DATABASES = {
     }
 }
 
+PAGINATION_DEFAULT = {"length": 20, "current": 0}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

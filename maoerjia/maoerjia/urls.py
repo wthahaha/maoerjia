@@ -15,28 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from apps.core.api.auth_view import (
-    change_password,
-    user_signup,
-    user_login,
-    verify_token
-)
 
-from apps.route import *
+from maoerjia.route import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/signup', user_signup, name='auth_signup'),
-    path('api/auth/login', user_login, name='auth_login'),
-    path('api/auth/verify', verify_token, name='token_verify'),
-    path('api/auth/change_password', change_password, name='change_password'),
+    # path('api/auth/signup', user_signup, name='auth_signup'),
+    # path('api/auth/login', user_login, name='auth_login'),
+    # path('api/auth/verify', verify_token, name='token_verify'),
+    # path('api/auth/change_password', change_password, name='change_password'),
 
-    path('api/teams/<int:pk>', TEAM_DETAIL, name='team_detail_view'),
-    path('api/search/teams', TEAM_SEARCH, name="team_select_search"),
-    path('api/teams/', TEAM_LIST, name='team_list_view'),
-
-    path('api/credentials/', CREDENTIALS_LIST, name='securey_key_view'),
-    path('api/credentials/<str:pk>', CREDENTIALS_DETAIL,
-         name='securey_key_view_detail'),
+    path('api/home_basic_info/<int:pk>', HomeBasicInfo_DETAIL, name='home_basic_info_detail_view'),
+    path('api/home_basic_info/', HomeBasicInfo_LIST, name='home_basic_info_list_view'),
 ]

@@ -1,8 +1,11 @@
 from django.contrib import admin
-from django.utils.safestring import mark_safe
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import HomeBasicInfo, PersionBasicInfo, HomePhoto, PersonPhoto, PersonIdCard, BasicLodgeServiceFee, VipServiceFee, LongTermLive, AdditionalInfo, PetInfo
+from django.utils.safestring import mark_safe
+
+from .models import (AdditionalInfo, BasicLodgeServiceFee, HomeBasicInfo,
+                     HomePhoto, LongTermLive, PersionBasicInfo, PersonIdCard,
+                     PersonPhoto, PetInfo, VipServiceFee)
 
 # Register your models here.
 

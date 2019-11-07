@@ -10,13 +10,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 from django.conf import settings
 from django.utils import six
-from apps.core.models import User
-
-
-def json_response(data=None, error=None, message=None):
-    """返回统一响应数据"""
-    response_data = {"data": data, "message": message, "error": error}
-    return response_data
+from family.models import PersionBasicInfo
 
 
 class JsonResponse(Response):
@@ -25,22 +19,30 @@ class JsonResponse(Response):
     用法: return JsonResponse(data=Json_data, message="message", error="error" status=status_code)
     """
 
-    def __init__(self, data=None, message=None, status=None,
-                 template_name=None, headers=None,
-                 exception=False, content_type=None, error=None):
+    def __init__(
+        self,
+        data=None,
+        message=None,
+        status=None,
+        template_name=None,
+        headers=None,
+        exception=False,
+        content_type=None,
+        error=None,
+    ):
         """
         Alters the init arguments slightly.
         For example, drop 'template_name', and instead use 'data'.
         Setting 'renderer' and 'media_type' will typically be deferred,
         For example being set automatically by the `APIView`.
         """
-        super(Response, self).__init__(None, status=status)
+        super().__init__(None, status=status)
 
         if isinstance(data, Serializer):
             message = (
-                'You passed a Serializer instance as data, but '
-                'probably meant to pass serialized `.data` or '
-                '`.error`. representation.'
+                "You passed a Serializer instance as data, but "
+                "probably meant to pass serialized `.data` or "
+                "`.error`. representation."
             )
             raise AssertionError(message)
 
@@ -63,13 +65,21 @@ class GenToken:
         self.email = email
 
     def generate_auth_token(self):
-        s = Serializer(settings.SECRET_KEY, expires_in=settings.TOKEN_LIFETIME)
-        return bytes.decode(s.dumps({'email': self.email}))
+        user_role_admin = False
+        user = User.objects.filter(email=self.email).first()
+        if user:
+            user_role_admin = user.is_admin
+        token_serializer = Serializer(
+            settings.SECRET_KEY, expires_in=settings.TOKEN_LIFETIME
+        )
+        return bytes.decode(
+            token_serializer.dumps({"email": self.email, "isAdmin": user_role_admin})
+        )
 
     def verify_auth_token(self, token):
-        s = Serializer(settings.SECRET_KEY)
+        token_serializer = Serializer(settings.SECRET_KEY)
         try:
-            data = s.loads(token)
+            data = token_serializer.loads(token)
         except SignatureExpired:
             return None, "用户token已过期"  # valid token, but expired
         except BadSignature:
@@ -90,9 +100,9 @@ class StandardResultsSetPagination(LimitOffsetPagination):
     # 默认每页显示的数据条数
     default_limit = settings.PAGINATION_DEFAULT["length"]
     # URL中传入的参数  每页显示的数据条数
-    limit_query_param = 'length'
+    limit_query_param = "length"
     # URL中传入的参数  当前数据页码
-    offset_query_param = 'page'
+    offset_query_param = "current"
     # 最大每页显示条数
     max_limit = None
 
@@ -110,20 +120,25 @@ class StandardResultsSetPagination(LimitOffsetPagination):
         if self.count == 0 or self.offset > self.count:
             return []
         self.offset = self.offset * self.limit
-        return list(queryset[self.offset:self.offset + self.limit])
+        return list(queryset[self.offset : (self.offset + self.limit)])  # noqa: E203
 
     def get_paginated_response(self, data, page_params="", length_params=""):
         if not page_params.isdigit():
-            page_params = settings.PAGINATION_DEFAULT["page"]
+            page_params = settings.PAGINATION_DEFAULT["current"]
         if not length_params.isdigit():
             length_params = int(settings.PAGINATION_DEFAULT["length"])
         if int(length_params) == 0:
             length_params = int(settings.PAGINATION_DEFAULT["length"])
-        data = OrderedDict([
-            ('pages', int((self.count+int(length_params)-1)/int(length_params))),
-            ('current', int(page_params)),
-            ('results', data)
-        ])
+        data = OrderedDict(
+            [
+                (
+                    "pages",
+                    int((self.count + int(length_params) - 1) / int(length_params)),
+                ),
+                ("current", int(page_params)),
+                ("results", data),
+            ]
+        )
         return data
 
 
@@ -134,3 +149,11 @@ def get_token_from_request(request):
     token_generator = GenToken()
     auth_token = request.META.get(settings.TOKEN_HEADER, "")
     return token_generator.verify_auth_token(auth_token)
+
+
+def clean_fields(fields):
+    fields_list = []
+    for field in fields:
+        if field:
+            fields_list.append(field)
+    return fields_list

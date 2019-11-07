@@ -1,6 +1,9 @@
-Django==1.11.6
+Django==2.2.5
 django-simpleui==1.4.8
+djangorestframework==3.10.3
+itsdangerous==1.1.0
 jieba==0.39
 Pillow==5.4.1
 pytz==2018.9
+sqlparse==0.3.0
 virtualenv==16.4.3
