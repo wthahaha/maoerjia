@@ -11,6 +11,8 @@ git clone https://github.com/cncert/maoerjia.git
 # source venv/bin/activate
 (venv)# pip install -r requirements.txt
 (venv)# cd maoerjia/
+(venv)# rm -rf family/migrations/000*
+(venv)# rm -rf db.sqlite3 (如果有)
 (venv)# python manage.py makemigrations
 (venv)# python manage.py migrate
 ```
