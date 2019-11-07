@@ -6,7 +6,8 @@
 
 ```shell
 
-注意：从git拉下来代码后，首先删除掉family/migrations/目录下以000开头的数据库迁移文件， 再删除掉本地当前目录下db.sqlite3文件
+注意：从git拉下来代码后，首先删除掉family/migrations/目录下以000开头的数据库迁移文件， 再删除掉本地当前目录下db.sqlite3文件（如果有）
+
 目前开发使用的sqlite3，以下创建mysql数据库过程忽略
 
 创建本地数据库
@@ -24,7 +25,6 @@ GRANT All privileges ON maoerjia.* TO 'maoerjia'@'%';
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
-python manage.py createsuperuser
 ```
 
 ### 1.3 启动服务器
@@ -44,13 +44,7 @@ python manage.py collectstatic
 
 ## 3. 开发注意事项
 
-### 3.1 每次更新代码后，都需要先执行数据库迁移操作
-
-```shell
-python manage.py migrate
-```
-
-更改model后，再执行数据库迁移操作
+### 3.1 更改model后，再执行数据库迁移操作
 
 ```shell
 python manage.py makemigrations
