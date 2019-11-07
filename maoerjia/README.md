@@ -17,12 +17,26 @@ GRANT All privileges ON maoerjia.* TO 'maoerjia'@'%';
 
 ```
 
-### 1.2 执行数据库迁移操作
-
-每次更新代码后，都需要先执行以下操作
+### 1.2 创建开发环境
 
 ```shell
-pip install -r requirements.txt
+git clone https://github.com/cncert/maoerjia.git
+# cd maoerjia
+# python37 -m venv venv
+# source venv/bin/activate
+(venv)# pip install -r requirements.txt
+(venv)# cd maoerjia/
+(venv)# python manage.py makemigrations
+(venv)# python manage.py migrate
+```
+
+### 1.3 执行数据库迁移操作
+
+每次从git更新代码后，都需要先执行以下操作
+
+```shell
+删除掉本地db.sqlite3数据库文件
+删除掉family/migrations/目录下以000开头的数据库迁移文件
 python manage.py makemigrations
 python manage.py migrate
 ```
