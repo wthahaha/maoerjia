@@ -1,4 +1,4 @@
-Django==2.2.5
+Django==2.2.20
 django-simpleui==3.3
 djangorestframework==3.10.3
 itsdangerous==1.1.0
