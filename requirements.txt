@@ -3,7 +3,7 @@ django-simpleui==3.3
 djangorestframework==3.10.3
 itsdangerous==1.1.0
 jieba==0.39
-Pillow==5.4.1
+Pillow==8.3.2
 pytz==2018.9
 sqlparse==0.3.0
 virtualenv==16.4.3
